@@ -103,6 +103,8 @@ function change_page(page_id) {
     page.classList.remove("page-in");
     page.classList.add("page-out");
   }
+  document.getElementById("savegame-name").value = "";
+  document.getElementById("savegame-desc").value = "";
   document.getElementById(page_id).classList.remove("page-out");
   document.getElementById(page_id).classList.add("page-in");
 }
@@ -115,9 +117,6 @@ function load_game_from_hash() {
   var search_ref = db.ref("games/" + hash);
   search_ref.once("value", function(snapshot) {
     var game = snapshot.val();
-    for (var i = 0; i < game.saves.length; i++) {
-      game_storage_ref = "games/" + hash + "/saves/" + uniqueid
-    }
     populate_game_area(game);
   });
 };
