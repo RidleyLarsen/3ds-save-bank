@@ -1,4 +1,3 @@
-var thing;
 // Set the configuration for your app
 var config = {
   apiKey: "AIzaSyCFFVZNetMbd5O4ki7JHau49Th7dKzV6sg",
@@ -60,37 +59,34 @@ var search_btn = document.getElementById("search-btn");
 
 search_btn.onclick = function (e) {
   var search_query = search_input.value;
-  if (search_query.length > 3) {
-    var region;
-    var radios = document.getElementsByName("region")
-    for (var i = 0, length = radios.length; i < length; i++) {
-      if (radios[i].checked) {
-        region = radios[i].value;
-        break;
-      }
+  var region;
+  var radios = document.getElementsByName("region")
+  for (var i = 0, length = radios.length; i < length; i++) {
+    if (radios[i].checked) {
+      region = radios[i].value;
+      break;
     }
-    if (region == "USA" || region == "EUR") {
-      search_query = search_query.toLowerCase();
-    }
-    console.log("Value: " + search_query);
-    console.log("Searching in: " + "games/" + region)
-    var results_elt = document.getElementById("search-results");
-    results_elt.innerHTML = "";
-    results_elt.innerHTML += alert_template({
-      type: "info",
-      text: "Displaying up to 10 results."
-    });
-
-    var search_ref = db.ref("games/" + region);
-    search_ref.orderByChild("search_name")
-      .startAt(search_query)
-      .limitToFirst(10)
-      .on("child_added", function(snapshot) {
-        console.log("Game:" + region + "/" + snapshot.key + snapshot.val().name);
-        thing = snapshot.val()
-        results_elt.innerHTML += search_template({name: snapshot.val().name, url: region + "/" + snapshot.key});
-    });
   }
+  if (region == "USA" || region == "EUR") {
+    search_query = search_query.toLowerCase();
+  }
+  console.log("Value: " + search_query);
+  console.log("Searching in: " + "games/" + region)
+  var results_elt = document.getElementById("search-results");
+  results_elt.innerHTML = "";
+  results_elt.innerHTML += alert_template({
+    type: "info",
+    text: "Displaying up to 10 results."
+  });
+
+  var search_ref = db.ref("games/" + region);
+  search_ref.orderByChild("search_name")
+    .startAt(search_query)
+    .limitToFirst(10)
+    .on("child_added", function(snapshot) {
+      console.log("Game:" + region + "/" + snapshot.key + snapshot.val().name);
+      results_elt.innerHTML += search_template({name: snapshot.val().name, url: region + "/" + snapshot.key});
+  });
 };
 
 function change_page(page_id) {
