@@ -1,0 +1,8 @@
+service firebase.storage {
+  match /b/ds-save-bank.appspot.com/o {
+    match /{allPaths=**} {
+      allow write: if request.resource.size < 3 * 1024 * 1024 && resource.contentType == 'application/zip';
+      allow read;
+    }
+  }
+}

@@ -86,7 +86,7 @@ search_btn.onclick = function (e) {
       .startAt(search_query)
       .limitToFirst(10)
       .on("child_added", function(snapshot) {
-        console.log("Game:" + "USA/" + snapshot.key + snapshot.val().name);
+        console.log("Game:" + region + "/" + snapshot.key + snapshot.val().name);
         thing = snapshot.val()
         results_elt.innerHTML += search_template({name: snapshot.val().name, url: region + "/" + snapshot.key});
     });
@@ -130,6 +130,30 @@ if (window.location.hash) {
 function populate_game_area(game) {
   var template_source   = document.getElementById("template-game-area").innerHTML;
   var template = Handlebars.compile(template_source);
+  if (window.location.hash.indexOf("USA") > -1) {
+    game.region = "USA";
+    game.region_emoji = "🇺🇲";
+  }
+  if (window.location.hash.indexOf("EUR") > -1) {
+    game.region = "EUR";
+    game.region_emoji = "🇪🇺";
+  }
+  if (window.location.hash.indexOf("JPN") > -1) {
+    game.region = "JPN";
+    game.region_emoji = "🇯🇵";
+  }
+  if (window.location.hash.indexOf("CHN") > -1) {
+    game.region = "CHN";
+    game.region_emoji = "🇨🇳";
+  }
+  if (window.location.hash.indexOf("TWN") > -1) {
+    game.region = "TWN";
+    game.region_emoji = "🇹🇼";
+  }
+  if (window.location.hash.indexOf("KOR") > -1) {
+    game.region = "KOR";
+    game.region_emoji = "🇰🇷";
+  }
   document.getElementById("game-details").innerHTML = template(game);
   change_page("game-area");
 }
