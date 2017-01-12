@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>3DS Save Bank</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase-storage.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
+    <script id="template-search-result" type="text/x-handlebars-template">
+        <div class="search-result">
+            <a href="#{{ url }}"><strong>{{ name }}</strong></a>
+        </div>
+    </script>
+    <script id="template-alert" type="text/x-handlebars-template">
+        <div class="alert alert-{{ type }}">
+            <strong>{{ strong }}</strong><span>{{ text }}</span>
+        </div>
+    </script>
+    <script id="template-game-area" type="text/x-handlebars-template">
+        <div class="game col-xs-12 col-sm-6">
+            <button class="btn btn-info btn-xs" onclick="change_page('main-area')">Back to Search</button>
+            <h1>{{ name }}</h1>
+            {{#if saves}}
+                {{#each saves}}
+                    <div class="save">
+                        <p><strong>Name: </strong><span>{{ this.name }}</span></p>
+                        <p>{{ this.description }}</p>
+                        <a class="btn btn-primary" href="{{ this.permalink }}">Download this Save</a>
+                    </div>
+                {{/each}}
+            {{else}}
+                <div class="alert alert-info">
+                    <strong>Hey!</strong> <span>This game doesn't have any uploaded saves yet. You can be the first.</span>
+                </div>
+            {{/if}}
+        </div>
+    </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">3DS Save Bank</a>
+            </div>
+        </div>
+    </nav>
+    <div id="main-area" class="page page-in container">
+        <div class="row">
+            <section class="col-xs-12 col-sm-6 games">
+                <div>
+                    <h2>Games</h2>
+                    <input id="id_region_USA" name="region" type="radio" value="USA" checked><label class="radio-region" for="id_region_USA">USA: 🇺🇲</label>
+                    <input id="id_region_EUR" name="region" type="radio" value="EUR"><label class="radio-region" for="id_region_EUR">EUR: 🇪🇺</label>
+                    <input id="id_region_JPN" name="region" type="radio" value="JPN"><label class="radio-region" for="id_region_JPN">JPN: 🇯🇵</label>
+                    <input id="id_region_CHN" name="region" type="radio" value="CHN"><label class="radio-region" for="id_region_CHN">CHN: 🇨🇳</label>
+                    <input id="id_region_TWN" name="region" type="radio" value="TWN"><label class="radio-region" for="id_region_TWN">TWN: 🇹🇼</label>
+                    <input id="id_region_KOR" name="region" type="radio" value="KOR"><label class="radio-region" for="id_region_KOR">KOR: 🇰🇷</label>
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
+                        <input id="search-input" type="text" class="form-control" placeholder="Search for a Game">
+                        <span class="input-group-btn">
+                            <button id="search-btn" class="btn btn-default" type="button">Search</button>
+                        </span>
+                    </div>
+                    <div id="search-results"></div>
+                </div>
+            </section>
+            <section class="col-xs-12 col-sm-6">
+                <div>
+                    <h2>How to upload saves</h2>
+                    <ol>
+                        <li>Launch JKSM from the homebrew launcher or the home menu.</li>
+                        <li>In JKSM, select your game (either Cartridge or SD/CIA)</li>
+                        <li>Choose "Save Data Options", then "Export Save"</li>
+                        <li>Select "New", then enter a name.</li>
+                        <li>Press "A" when finished.</li>
+                        <li>Power off your 3DS and insert your SD card into your computer.</li>
+                        <li>Open your SD card, then open the "JKSV" folder.</li>
+                        <li>Open the "Saves" folder, then create a zip file with the folder you created.</li>
+                        <ul>
+                            <li>On windows, you can right click and select "Send to compressed folder (zip)".</li>
+                            <li>On OSX, you can right click and select "Compress".</li>
+                        </ul>
+                        <li>Search for a game using the form on the left, then click on it.</li>
+                        <li>Click "Choose file", then select the zip you created.</li>
+                        <li>Fill out the form and click "submit". You did it!</li>
+                    </ol>
+                </div>
+                <div>
+                    <h2>How to use saves</h2>
+                    <ol>
+                        <li>Back up your current save using JKSM.</li>
+                        <li>Launch JKSM from the homebrew launcher or the home menu.</li>
+                        <li>Unzip the downloaded save file to your computer. Remember where you put it.</li>
+                        <li>Copy the unzipped folder to your 3DS. <strong>Be careful another folder with the same name doesn't exist.</strong></li>
+                        <li><strong>Don't open any files inside the zip.</strong></li>
+                        <li>In JKSM, select your game (either Cartridge or SD/CIA)</li>
+                        <li>Choose "Save Data Options", then "Browse SD for Data"</li>
+                        <li>Open the save folder you copied, and press "Y".</li>
+                        <li>Exit JKSM and open your game. You did it.</li>
+                    </ol>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div id="game-area" class="page page-out container">
+        <div id="game-details"></div>
+        <section class="col-xs-12 col-sm-6 upload">
+            <div>
+                <h2>Upload a Save</h2>
+                <p class="small">Saves must be created by <a href="https://github.com/J-D-K/JKSM">JKSM</a> for the 3DS.</p>
+                <form id="form">
+                    <label for="savegame-name">Your Name:</label>
+                    <input class="form-control" type="text" maxlength="20" id="savegame-name">
+                    <label for="savegame-desc">Description:</label>
+                    <textarea class="form-control" id="savegame-desc"></textarea>
+                    <input class="form-control" type="file" id="savegame-file">
+                    <button class="btn btn-primary" type="submit">Upload</button>
+                </form>
+            </div>
+            <div>
+                <h2>How to upload saves</h2>
+                <ol>
+                    <li>Launch JKSM from the homebrew launcher or the home menu.</li>
+                    <li>In JKSM, select your game (either Cartridge or SD/CIA)</li>
+                    <li>Choose "Save Data Options", then "Export Save"</li>
+                    <li>Select "New", then enter a name.</li>
+                    <li>Press "A" when finished.</li>
+                    <li>Power off your 3DS and insert your SD card into your computer.</li>
+                    <li>Open your SD card, then open the "JKSV" folder.</li>
+                    <li>Open the "Saves" folder, then create a zip file with the folder you created.</li>
+                    <ul>
+                        <li>On windows, you can right click and select "Send to compressed folder (zip)".</li>
+                        <li>On OSX, you can right click and select "Compress".</li>
+                    </ul>
+                    <li>Click "Choose file" above, then select the zip you created.</li>
+                    <li>Fill out the form and click "submit". You did it!</li>
+                </ol>
+            </div>
+            <div>
+                <h2>How to use saves</h2>
+                <ol>
+                    <li>Back up your current save using JKSM.</li>
+                    <li>Launch JKSM from the homebrew launcher or the home menu.</li>
+                    <li>Unzip the downloaded save file to your computer. Remember where you put it.</li>
+                    <li>Copy the unzipped folder to your 3DS. <strong>Be careful another folder with the same name doesn't exist.</strong></li>
+                    <li><strong>Don't open any files inside the zip.</strong></li>
+                    <li>In JKSM, select your game (either Cartridge or SD/CIA)</li>
+                    <li>Choose "Save Data Options", then "Browse SD for Data"</li>
+                    <li>Open the save folder you copied, and press "Y".</li>
+                    <li>Exit JKSM and open your game. You did it.</li>
+                </ol>
+            </div>
+        </section>
+    </div>
+
+    <script src="project.js"></script>
+  </body>
+</html>
