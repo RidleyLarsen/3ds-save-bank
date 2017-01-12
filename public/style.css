@@ -7,6 +7,7 @@ body {
 }
 
 .page {
+    width: 100% !important;
     position: absolute;
     background: white;
     transition: 500ms all;
