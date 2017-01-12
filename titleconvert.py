@@ -32,6 +32,8 @@ def main():
 
         game["search_name"] = strip_accents(game["name"])
         game["search_name"] = game["search_name"].lower()
+        game["search_name"] = game["search_name"].replace(":", '')
+        game["search_name"] = game["search_name"].replace("!", '')
 
         game["saves"] = []
 
