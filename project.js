@@ -88,7 +88,7 @@ search_btn.onclick = function (e) {
       .on("child_added", function(snapshot) {
         console.log("Game:" + "USA/" + snapshot.key + snapshot.val().name);
         thing = snapshot.val()
-        results_elt.innerHTML += search_template({name: snapshot.val().name, url: "USA/" + snapshot.key});
+        results_elt.innerHTML += search_template({name: snapshot.val().name, url: region + "/" + snapshot.key});
     });
   }
 };
