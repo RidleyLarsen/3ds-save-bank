@@ -1,3 +1,8 @@
+# This is only meant to be used with a titles.json file obtained from the internet.
+# This repository does not host any copyrighted content including title keys.
+# This script is intended to run with python3.
+# Ridley Larsen 2017
+
 import json
 import unicodedata
 
@@ -20,9 +25,11 @@ def main():
         "TWN": [],
     }
     for game in titles['games']:
+        # Update files don't have save games, so remove them from the DB.
         if "update" in game["name"].lower():
             continue
-        game["name"] = game["name"].replace(u"\u2122", '')
+        # Strip some characters from the game names. Firebase doesn't like some special characters in key names.
+        game["name"] = game["name"].replace(u"\u2122", '') # TM Symbol
         game["name"] = game["name"].replace("$", 's')
         game["name"] = game["name"].replace("#", '')
         game["name"] = game["name"].replace("[", '')
@@ -30,6 +37,7 @@ def main():
         game["name"] = game["name"].replace("/", '')
         game["name"] = game["name"].replace(".", '')
 
+        # Use the game's lowercased title as the search index and remove more special characters.
         game["search_name"] = strip_accents(game["name"])
         game["search_name"] = game["search_name"].lower()
         game["search_name"] = game["search_name"].replace(":", '')
@@ -47,7 +55,8 @@ def main():
         else:
             if game['region']:
                 games[game['region']].append(game)
-
+    
+    # Sanity Check
     print(len(games["USA"]))
 
     games = {"games": games}
