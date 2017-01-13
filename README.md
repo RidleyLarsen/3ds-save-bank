@@ -1,5 +1,7 @@
 # 3ds-save-bank
 
+Currently hosted at https://ds-save-bank.firebaseapp.com/
+
 This website is designed to facilitate the storage and sharing of 3DS save game files over the internet.
 
 It is designed to be used in conjunction with the JKSM for the 3DS.
