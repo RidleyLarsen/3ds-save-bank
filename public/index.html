@@ -35,7 +35,7 @@
     <script id="template-game-area" type="text/x-handlebars-template">
         <div class="game col-xs-12 col-sm-6">
             <button class="btn btn-info btn-xs" onclick="change_page('main-area')">Back to Search</button>
-            <h1>{{ name }} {{ region_emoji }} ({{ region }})</h1>
+            <h1>{{ name }} {{{ region_emoji }}} ({{ region }})</h1>
             {{#if saves}}
                 {{#each saves}}
                     <div class="save">
@@ -65,12 +65,12 @@
             <section class="col-xs-12 col-sm-6 games">
                 <div>
                     <h2>Games</h2>
-                    <input id="id_region_USA" name="region" type="radio" value="USA" checked><label class="radio-region" for="id_region_USA">USA: 🇺🇲</label>
-                    <input id="id_region_EUR" name="region" type="radio" value="EUR"><label class="radio-region" for="id_region_EUR">EUR: 🇪🇺</label>
-                    <input id="id_region_JPN" name="region" type="radio" value="JPN"><label class="radio-region" for="id_region_JPN">JPN: 🇯🇵</label>
-                    <input id="id_region_CHN" name="region" type="radio" value="CHN"><label class="radio-region" for="id_region_CHN">CHN: 🇨🇳</label>
-                    <input id="id_region_TWN" name="region" type="radio" value="TWN"><label class="radio-region" for="id_region_TWN">TWN: 🇹🇼</label>
-                    <input id="id_region_KOR" name="region" type="radio" value="KOR"><label class="radio-region" for="id_region_KOR">KOR: 🇰🇷</label>
+                    <input id="id_region_USA" name="region" type="radio" value="USA" checked><label class="radio-region" for="id_region_USA">USA: &#x1F1FA;&#x1F1F8;</label>
+                    <input id="id_region_EUR" name="region" type="radio" value="EUR"><label class="radio-region" for="id_region_EUR">EUR: &#x1F1EA;&#x1F1FA;</label>
+                    <input id="id_region_JPN" name="region" type="radio" value="JPN"><label class="radio-region" for="id_region_JPN">JPN: &#x1F1EF;&#x1F1F5;</label>
+                    <input id="id_region_CHN" name="region" type="radio" value="CHN"><label class="radio-region" for="id_region_CHN">CHN: &#x1F1E8;&#x1F1F3;</label>
+                    <input id="id_region_TWN" name="region" type="radio" value="TWN"><label class="radio-region" for="id_region_TWN">TWN: &#x1F1F9;&#x1F1FC;</label>
+                    <input id="id_region_KOR" name="region" type="radio" value="KOR"><label class="radio-region" for="id_region_KOR">KOR: &#x1F1F0;&#x1F1F7;</label>
                     <div class="input-group">
                         <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
                         <input id="search-input" type="text" class="form-control" placeholder="Search for a Game">

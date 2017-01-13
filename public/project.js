@@ -128,27 +128,27 @@ function populate_game_area(game) {
   var template = Handlebars.compile(template_source);
   if (window.location.hash.indexOf("USA") > -1) {
     game.region = "USA";
-    game.region_emoji = "🇺🇲";
+    game.region_emoji = "&#x1F1FA;&#x1F1F8;";
   }
   if (window.location.hash.indexOf("EUR") > -1) {
     game.region = "EUR";
-    game.region_emoji = "🇪🇺";
+    game.region_emoji = "&#x1F1EA;&#x1F1FA;";
   }
   if (window.location.hash.indexOf("JPN") > -1) {
     game.region = "JPN";
-    game.region_emoji = "🇯🇵";
+    game.region_emoji = "&#x1F1EF;&#x1F1F5;";
   }
   if (window.location.hash.indexOf("CHN") > -1) {
     game.region = "CHN";
-    game.region_emoji = "🇨🇳";
+    game.region_emoji = "&#x1F1E8;&#x1F1F3;";
   }
   if (window.location.hash.indexOf("TWN") > -1) {
     game.region = "TWN";
-    game.region_emoji = "🇹🇼";
+    game.region_emoji = "&#x1F1F9;&#x1F1FC;";
   }
   if (window.location.hash.indexOf("KOR") > -1) {
     game.region = "KOR";
-    game.region_emoji = "🇰🇷";
+    game.region_emoji = "&#x1F1F0;&#x1F1F7;";
   }
   document.getElementById("game-details").innerHTML = template(game);
   change_page("game-area");
