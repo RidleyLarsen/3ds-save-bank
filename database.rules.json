@@ -1,6 +1,56 @@
 {
   "rules": {
     ".read": true,
-    ".write": true
+    ".write": false,
+    "games": {
+      "USA": {
+          ".indexOn": "search_name",
+          "$game": {
+              "saves": {
+                  ".write": true,
+              }
+          }
+      },
+      "EUR": {
+          ".indexOn": "search_name",
+          "$game": {
+              "saves": {
+                  ".write": true,
+              }
+          }
+      },
+      "JPN": {
+          ".indexOn": "search_name",
+          "$game": {
+              "saves": {
+                  ".write": true,
+              }
+          }
+      },
+      "CHN": {
+          ".indexOn": "search_name",
+          "$game": {
+              "saves": {
+                  ".write": true,
+              }
+          }
+      },
+      "TWN": {
+          ".indexOn": "search_name",
+          "$game": {
+              "saves": {
+                  ".write": true,
+              }
+          }
+      },
+      "KOR": {
+          ".indexOn": "search_name",
+          "$game": {
+              "saves": {
+                  ".write": true,
+              }
+          }
+      }
+    }
   }
 }
