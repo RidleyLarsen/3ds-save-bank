@@ -7,7 +7,7 @@
           ".indexOn": "search_name",
           "$game": {
               "saves": {
-                  ".write": true,
+                  ".write": true
               }
           }
       },
@@ -15,7 +15,7 @@
           ".indexOn": "search_name",
           "$game": {
               "saves": {
-                  ".write": true,
+                  ".write": true
               }
           }
       },
@@ -23,7 +23,7 @@
           ".indexOn": "search_name",
           "$game": {
               "saves": {
-                  ".write": true,
+                  ".write": true
               }
           }
       },
@@ -31,7 +31,7 @@
           ".indexOn": "search_name",
           "$game": {
               "saves": {
-                  ".write": true,
+                  ".write": true
               }
           }
       },
@@ -39,7 +39,7 @@
           ".indexOn": "search_name",
           "$game": {
               "saves": {
-                  ".write": true,
+                  ".write": true
               }
           }
       },
@@ -47,7 +47,7 @@
           ".indexOn": "search_name",
           "$game": {
               "saves": {
-                  ".write": true,
+                  ".write": true
               }
           }
       }
