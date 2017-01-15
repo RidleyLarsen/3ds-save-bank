@@ -55,12 +55,13 @@ form.onsubmit = function (e) {
 };
 
 var search_input = document.getElementById("search-input");
-var search_btn = document.getElementById("search-btn");
+var search_form = document.getElementById("search-form");
 
-search_btn.onclick = function (e) {
+search_form.onsubmit = function (e) {
+  e.preventDefault();
   var search_query = search_input.value;
   var region;
-  var radios = document.getElementsByName("region")
+  var radios = document.getElementsByName("region");
   for (var i = 0, length = radios.length; i < length; i++) {
     if (radios[i].checked) {
       region = radios[i].value;
@@ -71,7 +72,7 @@ search_btn.onclick = function (e) {
     search_query = search_query.toLowerCase();
   }
   console.log("Value: " + search_query);
-  console.log("Searching in: " + "games/" + region)
+  console.log("Searching in: " + "games/" + region);
   var results_elt = document.getElementById("search-results");
   results_elt.innerHTML = "";
   results_elt.innerHTML += alert_template({
@@ -84,8 +85,18 @@ search_btn.onclick = function (e) {
     .startAt(search_query)
     .limitToFirst(10)
     .on("child_added", function(snapshot) {
-      console.log("Game:" + region + "/" + snapshot.key + snapshot.val().name);
-      results_elt.innerHTML += search_template({name: snapshot.val().name, url: region + "/" + snapshot.key});
+      var game = snapshot.val();
+      console.log("Game: " + region + "/" + snapshot.key + " " + game.name);
+      if (game.saves) {
+        num_saves = Object.keys(game.saves).length;
+      } else {
+        num_saves = 0;
+      }
+      results_elt.innerHTML += search_template({
+        name: game.name,
+        url: region + "/" + snapshot.key,
+        num_saves: num_saves
+      });
   });
 };
 
@@ -105,6 +116,15 @@ function change_page(page_id) {
   document.getElementById(page_id).classList.add("page-in");
 }
 
+function hash_change() {
+  if (window.location.hash.length < 3) {
+    change_page("main-area");
+  }
+  else {
+    load_game_from_hash();
+  }
+}
+
 function load_game_from_hash() {
   var hash = window.location.hash.slice(1);
   if (hash.length === 0) {
@@ -115,12 +135,12 @@ function load_game_from_hash() {
     var game = snapshot.val();
     populate_game_area(game);
   });
-};
+}
 
-window.onhashchange = load_game_from_hash;
+window.onhashchange = hash_change;
 
 if (window.location.hash) {
-  load_game_from_hash()
+  load_game_from_hash();
 }
 
 function populate_game_area(game) {

@@ -1,3 +1,7 @@
+input[type=search]::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -71,11 +75,25 @@ section form input, section form textarea {
 }
 
 .search-result {
+    position: relative;
     padding: 15px;
     border: 1px solid #eaeaea;
     margin-bottom: 10px;
     margin-top: 10px;
     border-radius: 4px;
+}
+
+.search-result-saves {
+    position: absolute;
+    padding: 14px;
+    border: 1px solid #eaeaea;
+    margin: 0;
+    right: 0;
+    top: 0;
+    border-radius: 0px 4px 4px 0;
+    background: #eaeaea;
+    font-weight: bold;
+    color: gray;
 }
 
 .games .alert.alert-info {

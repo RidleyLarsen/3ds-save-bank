@@ -25,6 +25,9 @@
     <script id="template-search-result" type="text/x-handlebars-template">
         <div class="search-result">
             <a href="#{{ url }}"><strong>{{ name }}</strong></a>
+            {{#if num_saves }}
+                <span class="search-result-saves">{{ num_saves }}</span>
+            {{/if}}
         </div>
     </script>
     <script id="template-alert" type="text/x-handlebars-template">
@@ -71,13 +74,15 @@
                     <input id="id_region_CHN" name="region" type="radio" value="CHN"><label class="radio-region" for="id_region_CHN">CHN: &#x1F1E8;&#x1F1F3;</label>
                     <input id="id_region_TWN" name="region" type="radio" value="TWN"><label class="radio-region" for="id_region_TWN">TWN: &#x1F1F9;&#x1F1FC;</label>
                     <input id="id_region_KOR" name="region" type="radio" value="KOR"><label class="radio-region" for="id_region_KOR">KOR: &#x1F1F0;&#x1F1F7;</label>
-                    <div class="input-group">
-                        <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
-                        <input id="search-input" type="text" class="form-control" placeholder="Search for a Game">
-                        <span class="input-group-btn">
-                            <button id="search-btn" class="btn btn-default" type="button">Search</button>
-                        </span>
-                    </div>
+                    <form id="search-form">
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
+                            <input id="search-input" type="search" class="form-control" placeholder="Search for a Game">
+                            <span class="input-group-btn">
+                                <button id="search-btn" class="btn btn-default" type="submit">Search</button>
+                            </span>
+                        </div>
+                    </form>
                     <div id="search-results"></div>
                 </div>
             </section>
