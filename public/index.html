@@ -32,7 +32,7 @@
     </script>
     <script id="template-alert" type="text/x-handlebars-template">
         <div class="alert alert-{{ type }}">
-            <strong>{{ strong }}</strong><span>{{ text }}</span>
+            <strong>{{ strong }}</strong><span>{{{ text }}}</span>
         </div>
     </script>
     <script id="template-game-area" type="text/x-handlebars-template">
@@ -74,9 +74,10 @@
                     <input id="id_region_CHN" name="region" type="radio" value="CHN"><label class="radio-region" for="id_region_CHN">CHN: &#x1F1E8;&#x1F1F3;</label>
                     <input id="id_region_TWN" name="region" type="radio" value="TWN"><label class="radio-region" for="id_region_TWN">TWN: &#x1F1F9;&#x1F1FC;</label>
                     <input id="id_region_KOR" name="region" type="radio" value="KOR"><label class="radio-region" for="id_region_KOR">KOR: &#x1F1F0;&#x1F1F7;</label>
+                    <button class="btn-browse btn btn-primary" onclick="get_games_by_saves('saves')">List Games by number of Saves</button>
+                    <button class="btn-browse btn btn-primary" onclick="get_games_by_saves('az')">List Games with saves A-Z</button>
                     <form id="search-form">
                         <div class="input-group">
-                            <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
                             <input id="search-input" type="search" class="form-control" placeholder="Search for a Game">
                             <span class="input-group-btn">
                                 <button id="search-btn" class="btn btn-default" type="submit">Search</button>
@@ -122,15 +123,6 @@
                     </ol>
                 </div>
                 <p class="small">&copy; Ridley Larsen 2017. No warranty is provided and I take no responsibility for lost data or corrupted save files. <br> Use at your own risk.</p>
-                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- 3ds large mobile -->
-                <ins class="adsbygoogle"
-                     style="display:inline-block;width:320px;height:100px"
-                     data-ad-client="ca-pub-2663348511439016"
-                     data-ad-slot="9036496280"></ins>
-                <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
             </section>
         </div>
     </div>

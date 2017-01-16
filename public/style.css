@@ -112,4 +112,11 @@ section form input, section form textarea {
     label.radio-region {
         width: calc(33.33% - 3px);
     }
+    .btn-browse {
+        width: 100%;
+        margin-bottom: 10px !important;
+    }
+    .games .input-group {
+        margin-top: 0;
+    }
 }

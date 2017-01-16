@@ -14,6 +14,8 @@ var search_template = Handlebars.compile(search_template_source);
 var alert_template_source   = document.getElementById("template-alert").innerHTML;
 var alert_template = Handlebars.compile(alert_template_source);
 
+var results_elt = document.getElementById("search-results");
+
 /* Shamelessly stolen from SO here: http://stackoverflow.com/a/105074 */
 // Generate a random-enough ID. Used for file identifiers.
 function guid() {
@@ -54,12 +56,27 @@ form.onsubmit = function (e) {
     });
 };
 
-var search_input = document.getElementById("search-input");
-var search_form = document.getElementById("search-form");
+function build_result(game) {
+  region = get_selected_region();
+  if (game.saves) {
+    num_saves = Object.keys(game.saves).length;
+  } else {
+    num_saves = 0;
+  }
+  results_elt.innerHTML += search_template({
+    name: game.name,
+    url: region + "/" + game.key,
+    num_saves: num_saves
+  });
+}
 
-search_form.onsubmit = function (e) {
-  e.preventDefault();
-  var search_query = search_input.value;
+function handle_results(snapshot) {
+  var game = snapshot.val();
+  game.key = snapshot.key;
+  build_result(game);
+}
+
+function get_selected_region() {
   var region;
   var radios = document.getElementsByName("region");
   for (var i = 0, length = radios.length; i < length; i++) {
@@ -68,36 +85,32 @@ search_form.onsubmit = function (e) {
       break;
     }
   }
+  return region;
+}
+
+var search_input = document.getElementById("search-input");
+var search_form = document.getElementById("search-form");
+
+search_form.onsubmit = function (e) {
+  e.preventDefault();
+  var search_query = search_input.value;
+  var region = get_selected_region();
   if (region == "USA" || region == "EUR") {
     search_query = search_query.toLowerCase();
   }
   console.log("Value: " + search_query);
   console.log("Searching in: " + "games/" + region);
-  var results_elt = document.getElementById("search-results");
   results_elt.innerHTML = "";
   results_elt.innerHTML += alert_template({
     type: "info",
-    text: "Displaying up to 10 results."
+    text: "Displaying up to 10 results for <strong>" + search_query + "</strong>.",
   });
 
   var search_ref = db.ref("games/" + region);
   search_ref.orderByChild("search_name")
     .startAt(search_query)
     .limitToFirst(10)
-    .on("child_added", function(snapshot) {
-      var game = snapshot.val();
-      console.log("Game: " + region + "/" + snapshot.key + " " + game.name);
-      if (game.saves) {
-        num_saves = Object.keys(game.saves).length;
-      } else {
-        num_saves = 0;
-      }
-      results_elt.innerHTML += search_template({
-        name: game.name,
-        url: region + "/" + snapshot.key,
-        num_saves: num_saves
-      });
-  });
+    .on("child_added", handle_results);
 };
 
 function change_page(page_id) {
@@ -172,4 +185,39 @@ function populate_game_area(game) {
   }
   document.getElementById("game-details").innerHTML = template(game);
   change_page("game-area");
+}
+
+var results;
+
+function get_games_by_saves(sort) {
+  results_elt.innerHTML = "";
+  region = get_selected_region();
+  console.log(region);
+  var search_ref = db.ref("games/" + region);
+  search_ref
+    .orderByChild("saves")
+    .startAt("-")
+    .limitToFirst(250)
+    .once("value").then(function (snapshot) {
+      results = snapshot.val();
+      results_list = Object.keys(results);
+      if (sort == "saves") {
+        results_list.sort(function (a, b) {
+          if (Object.keys(results[a].saves).length > Object.keys(results[b].saves).length) { return -1; }
+          if (Object.keys(results[a].saves).length < Object.keys(results[b].saves).length) { return 1; }
+          if (Object.keys(results[a].saves).length == Object.keys(results[b].saves).length) { return 0; }
+        });
+      } else if (sort == "az") {
+        results_list.sort(function (a, b) {
+          if (results[a].name < results[b].name) { return -1; }
+          if (results[a].name > results[b].name) { return 1; }
+          if (results[a].name == results[b].name) { return 0; }
+        });
+      }
+      for (var i = 0; i < results_list.length; i++) {
+        var game = results[results_list[i]];
+        game.key = results_list[i];
+        build_result(game);
+      }
+    });
 }
