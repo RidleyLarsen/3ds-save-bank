@@ -13,6 +13,8 @@ var search_template_source   = document.getElementById("template-search-result")
 var search_template = Handlebars.compile(search_template_source);
 var alert_template_source   = document.getElementById("template-alert").innerHTML;
 var alert_template = Handlebars.compile(alert_template_source);
+var spinner_template_source   = document.getElementById("template-spinner").innerHTML;
+var spinner_template = Handlebars.compile(spinner_template_source);
 
 var results_elt = document.getElementById("search-results");
 
@@ -53,6 +55,7 @@ document.body.onclick = resetTimeout;
 var form = document.getElementById("form");
 form.onsubmit = function (e) {
   e.preventDefault();
+  form.innerHTML += spinner_template();
   var hash = window.location.hash.slice(1);
   var uniqueid = guid();
   var storage_savegame = storage_saves.child("games/" + hash + "/saves/3ds-save-" + uniqueid + ".zip");
@@ -109,6 +112,7 @@ var search_form = document.getElementById("search-form");
 
 search_form.onsubmit = function (e) {
   e.preventDefault();
+  results_elt.innerHTML = spinner_template();
   var search_query = search_input.value;
   var region = get_selected_region();
   if (region == "USA" || region == "EUR") {
@@ -206,7 +210,7 @@ function populate_game_area(game) {
 var results;
 
 function get_games_by_saves(sort) {
-  results_elt.innerHTML = "";
+  results_elt.innerHTML = spinner_template();
   region = get_selected_region();
   console.log(region);
   var search_ref = db.ref("games/" + region);
@@ -215,6 +219,7 @@ function get_games_by_saves(sort) {
     .startAt("-")
     .limitToFirst(250)
     .once("value").then(function (snapshot) {
+      results_elt.innerHTML = "";
       results = snapshot.val();
       if (results === null) {
         results_elt.innerHTML += alert_template({

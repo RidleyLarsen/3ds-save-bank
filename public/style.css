@@ -1,3 +1,16 @@
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
+}
+
 input[type=search]::-webkit-search-cancel-button {
     -webkit-appearance: searchfield-cancel-button;
 }
@@ -106,6 +119,12 @@ section form input, section form textarea {
     padding: 15px;
     margin-bottom: 15px;
     border-radius: 4px;
+}
+
+.spinner {
+    -webkit-animation: spin 1s infinite linear;
+    font-size: 2em;
+    margin: 10px;
 }
 
 @media only screen and (max-width: 768px) {
