@@ -56,10 +56,11 @@ document.body.onclick = resetTimeout;
 var form = document.getElementById("form");
 form.onsubmit = function (e) {
   e.preventDefault();
-  form.innerHTML += spinner_template();
   var hash = window.location.hash.slice(1);
   var uniqueid = guid();
   var storage_savegame = storage_saves.child("games/" + hash + "/saves/3ds-save-" + uniqueid + ".zip");
+  var form_spinner_container = document.getElementById("form-spinner");
+  form_spinner_container.innerHTML = spinner_template();
   file = document.getElementById("savegame-file");
   var storageUploadTask = storage_savegame
     .put(file.files[0], {contentType: "application/zip"})
