@@ -200,6 +200,13 @@ function get_games_by_saves(sort) {
     .limitToFirst(250)
     .once("value").then(function (snapshot) {
       results = snapshot.val();
+      if (results === null) {
+        results_elt.innerHTML += alert_template({
+          type: "info",
+          text: "No results returned."
+        });
+        return;
+      }
       results_list = Object.keys(results);
       if (sort == "saves") {
         results_list.sort(function (a, b) {
