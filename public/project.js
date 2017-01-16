@@ -44,6 +44,7 @@ function resetTimeout() {
 }
 function inactive() {
   // Prepend an alert for the user notifying them they were disconnected.
+  var main_area = document.getElementById("main-area");
   main_area.innerHTML = alert_template({
     type: "danger",
     text: "Oops. You were inactive for a while so your database connection dropped. Please refresh the page."
