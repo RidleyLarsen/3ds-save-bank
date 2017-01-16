@@ -34,6 +34,22 @@ var storage_saves = storage.ref('saves');
 var db = firebase.database();
 var ref = db.ref('saves');
 
+// Setup inactive timer to prevent unused DB connections from polluting the connection pool.
+var inactivityTimeout = 0;
+function resetTimeout() {
+    clearTimeout(inactivityTimeout);
+    inactivityTimeout = setTimeout(inactive, 600000);
+}
+function inactive() {
+  // Prepend an alert for the user notifying them they were disconnected.
+  main_area.innerHTML = alert_template({
+    type: "danger",
+    text: "Oops. You were inactive for a while so your database connection dropped. Please refresh the page."
+  }) + main_area.innerHTML;
+  firebase.database().goOffline();
+}
+document.body.onclick = resetTimeout;
+
 var form = document.getElementById("form");
 form.onsubmit = function (e) {
   e.preventDefault();
